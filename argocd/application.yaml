@@ -1,0 +1,29 @@
+# ArgoCD Application
+# nowait-app을 nowait-dev 네임스페이스에 자동 배포합니다.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nowait-app-dev
+  namespace: argocd
+spec:
+  project: nowait
+
+  # 소스: nowait-config 레포의 apps/dev 디렉토리
+  source:
+    repoURL: "https://github.com/<your-github-org>/nowait-config"  # 실제 org명으로 변경
+    targetRevision: main
+    path: apps/dev
+
+  # 배포 대상
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nowait-dev
+
+  syncPolicy:
+    # 자동 동기화 — nowait-config에 push하면 자동 배포
+    automated:
+      prune: true     # 삭제된 리소스 자동 제거
+      selfHeal: true  # 수동 변경 시 ArgoCD가 되돌림
+
+    syncOptions:
+      - CreateNamespace=true  # nowait-dev 네임스페이스 없으면 자동 생성

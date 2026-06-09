@@ -1,0 +1,21 @@
+# ArgoCD Helm Values
+# chart: argo-cd
+# version: 7.8.23
+
+global:
+  domain: ""  # 추후 Route53 도메인 확정 후 입력
+
+server:
+  service:
+    type: ClusterIP  # ALB Ingress로 노출
+
+  ingress:
+    enabled: false  # ALB 설정 완료 후 true로 변경
+
+  # ArgoCD UI 접근 시 HTTPS 강제 비활성화 (ALB에서 TLS 처리)
+  extraArgs:
+    - --insecure
+
+configs:
+  params:
+    server.insecure: true

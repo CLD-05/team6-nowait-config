@@ -1,0 +1,41 @@
+# ArgoCD AppProject
+# team6 전용 프로젝트 — nowait-app 배포 범위를 제한합니다.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: nowait
+  namespace: argocd
+spec:
+  description: "NoWait project — team6"
+
+  # 소스 레포 허용 목록
+  sourceRepos:
+    - "https://github.com/<your-github-org>/nowait-config"  # 실제 org명으로 변경
+
+  # 배포 대상 클러스터 및 네임스페이스
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: nowait-dev
+    - server: https://kubernetes.default.svc
+      namespace: nowait-prod
+
+  # 배포 가능한 리소스 종류
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+
+  namespaceResourceWhitelist:
+    - group: "apps"
+      kind: Deployment
+    - group: ""
+      kind: Service
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Secret
+    - group: "autoscaling"
+      kind: HorizontalPodAutoscaler
+    - group: "networking.k8s.io"
+      kind: Ingress
+    - group: "external-secrets.io"
+      kind: ExternalSecret

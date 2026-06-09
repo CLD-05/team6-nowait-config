@@ -1,0 +1,19 @@
+# External Secrets Operator Helm Values
+# chart: external-secrets
+# version: 0.14.4
+# 용도: AWS Secrets Manager 값을 K8s Secret으로 동기화
+
+installCRDs: true
+
+serviceAccount:
+  create: true
+  name: external-secrets
+  # Pod Identity 사용 — annotations 불필요
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi

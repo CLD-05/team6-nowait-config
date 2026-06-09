@@ -1,0 +1,22 @@
+# AWS Load Balancer Controller Helm Values
+# chart: aws-load-balancer-controller
+# version: 1.13.0
+
+clusterName: ""  # terraform apply 후 실제 클러스터 이름으로 입력
+
+serviceAccount:
+  create: true
+  name: aws-load-balancer-controller
+  # Pod Identity 사용 — annotations 불필요
+
+region: ap-northeast-2
+vpcId: ""  # terraform output vpc_id 값 입력
+
+# 리소스 제한
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

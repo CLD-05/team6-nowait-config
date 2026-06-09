@@ -1,0 +1,15 @@
+# metrics-server Helm Values
+# chart: metrics-server
+# version: 3.12.2
+# 용도: HPA(Horizontal Pod Autoscaler) CPU/Memory 메트릭 수집
+
+args:
+  - --kubelet-insecure-tls  # EKS 환경에서 필요
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
