@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nowait-api
+  namespace: nowait-dev
+  labels:
+    app: nowait-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nowait-api
+  template:
+    metadata:
+      labels:
+        app: nowait-api
+    spec:
+      containers:
+      - name: nowait-api-container
+        # [임시] nginx 이미지 사용, 실제로는 Spring Boot 애플리케이션 이미지로 교체 필요
+        image: nginx:stable-alpine
+        # 나중에 변경
+        # image: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/nowait-app-dev:<태그>
+        ports:
+        - containerPort: 80
+        
+        # [중요] Metrics-server 및 HPA 연동을 위한 자원 정의
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+        # External Secrets Operator가 생성해준 K8s Secret을 환경변수로 통째로 바인딩
+        envFrom:
+        - secretRef:
+            name: nowait-app-secret
