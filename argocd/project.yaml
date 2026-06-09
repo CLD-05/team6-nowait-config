@@ -10,7 +10,7 @@ spec:
 
   # 소스 레포 허용 목록
   sourceRepos:
-    - "https://github.com/<your-github-org>/nowait-config"  # 실제 org명으로 변경
+    - "https://github.com/CLD-05/team6-nowait-config"  # 실제 org명으로 변경
 
   # 배포 대상 클러스터 및 네임스페이스
   destinations:

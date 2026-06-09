@@ -10,7 +10,7 @@ spec:
 
   # 소스: nowait-config 레포의 apps/dev 디렉토리
   source:
-    repoURL: "https://github.com/<your-github-org>/nowait-config"  # 실제 org명으로 변경
+    repoURL: "https://github.com/CLD-05/team6-nowait-config"  # 실제 org명으로 변경
     targetRevision: main
     path: apps/dev
 
