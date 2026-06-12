@@ -14,8 +14,8 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     
     # 타겟 그룹 헬스체크 설정 경로 (Nginx 기본 메인 페이지 타겟)
-    alb.ingress.kubernetes.io/healthcheck-path: /
-    alb.ingress.kubernetes.io/healthcheck-port: "80"
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/healthcheck-port: "8080"
     # terraform apply 후 public subnet ID 확정되면 주석 해제 후 입력
     # alb.ingress.kubernetes.io/subnets: subnet-xxxx, subnet-xxxx
 spec:
@@ -28,4 +28,4 @@ spec:
           service:
             name: nowait-api-service
             port:
-              number: 80
+              number: 8080

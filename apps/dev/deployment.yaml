@@ -18,11 +18,11 @@ spec:
       containers:
       - name: nowait-api-container
         # [임시] nginx 이미지 사용, 실제로는 Spring Boot 애플리케이션 이미지로 교체 필요
-        image: nginx:stable-alpine
+        # image: nginx:stable-alpine
         # 나중에 변경
-        # image: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/nowait-app-dev:<태그>
+        image: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/nowait-api:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         
         # [중요] Metrics-server 및 HPA 연동을 위한 자원 정의
         resources:
