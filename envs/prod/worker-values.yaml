@@ -1,0 +1,33 @@
+# prod 환경 worker 오버라이드 값
+
+replicaCount: 2
+
+image:
+  tag: "latest"  # cicd.yml에서 이미지 태그 자동 갱신
+
+hpa:
+  minReplicas: 2
+  maxReplicas: 8
+
+# prod: m6i.large 기준 (피드백 반영 - T계열 사용 금지)
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
+env:
+  SPRING_PROFILES_ACTIVE: "prod"
+
+externalSecret:
+  secrets:
+    - secretKey: DB_URL
+      remoteKey: /nowait/prod/db/url
+    - secretKey: DB_USERNAME
+      remoteKey: /nowait/prod/db/username
+    - secretKey: DB_PASSWORD
+      remoteKey: /nowait/prod/db/password
+    - secretKey: REDIS_HOST
+      remoteKey: /nowait/prod/redis/host

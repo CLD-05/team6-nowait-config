@@ -1,0 +1,6 @@
+apiVersion: v2
+name: nowait-worker
+description: NoWait Worker (대기열 처리) Helm Chart
+type: application
+version: 0.1.0
+appVersion: "latest"

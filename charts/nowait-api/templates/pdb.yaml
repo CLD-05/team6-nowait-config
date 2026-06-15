@@ -1,0 +1,15 @@
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nowait-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: nowait-api
+    team: team6
+spec:
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      app: nowait-api
+{{- end }}

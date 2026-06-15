@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nowait-api-prod
+  namespace: argocd
+  labels:
+    team: team6
+    env: prod
+    app: nowait-api
+spec:
+  project: nowait
+  source:
+    repoURL: https://github.com/CLD-05/team6-nowait-config.git
+    targetRevision: main
+    path: charts/nowait-api
+    helm:
+      valueFiles:
+        - ../../envs/prod/api-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nowait-prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

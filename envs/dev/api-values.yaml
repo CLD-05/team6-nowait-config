@@ -1,0 +1,37 @@
+# dev 환경 api 오버라이드 값
+
+replicaCount: 1
+
+image:
+  tag: "latest"  # cicd.yml에서 이미지 태그 자동 갱신
+
+ingress:
+  host: dev-api.nowait.internal  # 실제 도메인으로 교체 필요
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 3
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+env:
+  SPRING_PROFILES_ACTIVE: "dev"
+
+externalSecret:
+  secrets:
+    - secretKey: DB_URL
+      remoteKey: /nowait/dev/db/url
+    - secretKey: DB_USERNAME
+      remoteKey: /nowait/dev/db/username
+    - secretKey: DB_PASSWORD
+      remoteKey: /nowait/dev/db/password
+    - secretKey: JWT_SECRET
+      remoteKey: /nowait/dev/jwt/secret
+    - secretKey: REDIS_HOST
+      remoteKey: /nowait/dev/redis/host
