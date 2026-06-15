@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image:
-  repository: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/nowait-api
+  repository: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/team6-nowait-app
   tag: "latest"
   pullPolicy: IfNotPresent
 
