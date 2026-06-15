@@ -51,16 +51,10 @@ externalSecret:
   secretStoreName: nowait-secret-store
   secretStoreKind: ClusterSecretStore
   secrets:
-    - secretKey: DB_URL
-      remoteKey: /nowait/db/url
-    - secretKey: DB_USERNAME
-      remoteKey: /nowait/db/username
-    - secretKey: DB_PASSWORD
-      remoteKey: /nowait/db/password
-    - secretKey: JWT_SECRET
-      remoteKey: /nowait/jwt/secret
-    - secretKey: REDIS_HOST
-      remoteKey: /nowait/redis/host
+     - secretKey: api
+       remoteKey: ""
+     - secretKey: redis
+       remoteKey: ""
 
 env:
   SPRING_PROFILES_ACTIVE: ""  # envs에서 오버라이드

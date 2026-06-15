@@ -25,13 +25,7 @@ env:
 
 externalSecret:
   secrets:
-    - secretKey: DB_URL
-      remoteKey: /nowait/dev/db/url
-    - secretKey: DB_USERNAME
-      remoteKey: /nowait/dev/db/username
-    - secretKey: DB_PASSWORD
-      remoteKey: /nowait/dev/db/password
-    - secretKey: JWT_SECRET
-      remoteKey: /nowait/dev/jwt/secret
-    - secretKey: REDIS_HOST
-      remoteKey: /nowait/dev/redis/host
+    - secretKey: api
+      remoteKey: team6-nowait/dev/api
+    - secretKey: redis
+      remoteKey: team6-nowait/dev/redis
