@@ -26,7 +26,7 @@ hpa:
 externalSecret:
   enabled: true
   refreshInterval: 1h
-  secretStoreName: nowait-secret-store
+  secretStoreName: team6-nowait-cluster-secret-store
   secretStoreKind: ClusterSecretStore
   secrets:
     - secretKey: api
@@ -41,4 +41,4 @@ env:
 serviceAccount:
   name: nowait-worker-sa
 
-namespace: nowait
+namespace: nowait-dev

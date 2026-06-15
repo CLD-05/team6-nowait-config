@@ -18,7 +18,7 @@ spec:
         - ../../envs/dev/api-values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: nowait
+    namespace: nowait-dev
   syncPolicy:
     automated:
       prune: true
