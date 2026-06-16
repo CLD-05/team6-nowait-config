@@ -33,3 +33,5 @@ externalSecret:
       remoteKey: team6-nowait/prod/api
     - secretKey: redis
       remoteKey: team6-nowait/prod/redis
+
+namespace: nowait-prod 
