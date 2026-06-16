@@ -22,7 +22,7 @@ resources:
     memory: 2Gi
 
 pdb:
-  minAvailable: 2
+  minAvailable: 1
 
 env:
   SPRING_PROFILES_ACTIVE: "prod"
@@ -32,4 +32,4 @@ externalSecret:
     - key: team6-nowait/prod/api
     - key: team6-nowait/prod/redis
 
-namespace: nowait-prod 
+namespace: nowait-prod

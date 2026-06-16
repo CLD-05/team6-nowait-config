@@ -1,7 +1,0 @@
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: nowait-api
-spec:
-  minReplicas: 1
-  maxReplicas: 2

@@ -1,5 +1,5 @@
 # nowait-api 공통 기본값
-# 환경별 오버라이드는 envs/dev/api-values.yaml, envs/prod/api-values.yaml 참고
+# 환경별 오버라이드는 envs/dev/api-values.yaml, envs/prod/api-values.yaml에서 관리한다.
 
 replicaCount: 2
 
@@ -20,9 +20,9 @@ ingress:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
     alb.ingress.kubernetes.io/healthcheck-port: "8080"
-  host: ""  # envs에서 오버라이드
+  host: ""
   path: /
   pathType: Prefix
 
@@ -34,12 +34,19 @@ resources:
     cpu: 500m
     memory: 1Gi
 
+# 현재는 HPA 사용.
+# 나중에 KEDA로 전환하면 hpa.enabled=false, keda.enabled=true로 바꾼다.
 hpa:
   enabled: true
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 70
+
+# KEDA ScaledObject 템플릿은 아직 없으므로 기본값은 false.
+# keda.enabled=true로 바꾸려면 templates/scaledobject.yaml을 추가해야 한다.
+keda:
+  enabled: false
 
 pdb:
   enabled: true
@@ -53,7 +60,7 @@ externalSecret:
   dataFrom: []
 
 env:
-  SPRING_PROFILES_ACTIVE: ""  # envs에서 오버라이드
+  SPRING_PROFILES_ACTIVE: ""
   SERVER_PORT: "8080"
 
 serviceAccount:

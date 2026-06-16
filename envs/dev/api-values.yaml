@@ -6,7 +6,7 @@ image:
   tag: "dev-e746baf"  # cicd.yml에서 이미지 태그 자동 갱신
 
 ingress:
-  host: dev-api.nowait.internal  # 실제 도메인으로 교체 필요
+  host: "" 
 
 hpa:
   minReplicas: 1

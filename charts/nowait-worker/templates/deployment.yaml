@@ -7,7 +7,9 @@ metadata:
     app: nowait-worker
     team: team6
 spec:
+  {{- if not (or .Values.hpa.enabled .Values.keda.enabled) }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: nowait-worker
