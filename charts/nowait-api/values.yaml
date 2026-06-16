@@ -50,11 +50,7 @@ externalSecret:
   refreshInterval: 1h
   secretStoreName: team6-nowait-cluster-secret-store
   secretStoreKind: ClusterSecretStore
-  secrets:
-     - secretKey: api
-       remoteKey: ""
-     - secretKey: redis
-       remoteKey: ""
+  dataFrom: []
 
 env:
   SPRING_PROFILES_ACTIVE: ""  # envs에서 오버라이드

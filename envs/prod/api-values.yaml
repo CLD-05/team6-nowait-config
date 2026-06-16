@@ -28,10 +28,8 @@ env:
   SPRING_PROFILES_ACTIVE: "prod"
 
 externalSecret:
-  secrets:
-    - secretKey: api
-      remoteKey: team6-nowait/prod/api
-    - secretKey: redis
-      remoteKey: team6-nowait/prod/redis
+  dataFrom:
+    - key: team6-nowait/prod/api
+    - key: team6-nowait/prod/redis
 
 namespace: nowait-prod 

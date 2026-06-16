@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: waiting-worker
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: waiting-worker
+          resources:
+            requests:
+              cpu: 150m
+              memory: 384Mi
+            limits:
+              cpu: 500m
+              memory: 768Mi

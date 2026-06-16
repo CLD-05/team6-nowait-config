@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: nowait
+  namespace: argocd
+spec:
+  description: NoWait GitOps Project
+
+  sourceRepos:
+    - https://github.com/CLD-05/team6-nowait-config.git
+
+  destinations:
+    - namespace: nowait-dev
+      server: https://kubernetes.default.svc
+    - namespace: nowait-prod
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+    - group: external-secrets.io
+      kind: ClusterSecretStore
+
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

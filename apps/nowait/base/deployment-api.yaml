@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nowait-api
+  labels:
+    app.kubernetes.io/name: nowait-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nowait-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nowait-api
+        app.kubernetes.io/part-of: nowait
+    spec:
+      serviceAccountName: nowait-api
+      containers:
+        - name: nowait-api
+          image: nowait-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: APP_ROLE
+              value: "api"
+          envFrom:
+            - configMapRef:
+                name: nowait-app-config
+            - secretRef:
+                name: nowait-app-secret
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 40
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi

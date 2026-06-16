@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nowait-dev
+  namespace: argocd
+spec:
+  project: nowait
+
+  source:
+    repoURL: https://github.com/CLD-05/team6-nowait-config.git
+    targetRevision: develop
+    path: apps/nowait/overlays/dev
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nowait-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
