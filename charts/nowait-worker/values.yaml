@@ -36,6 +36,7 @@ externalSecret:
   secretStoreName: team6-nowait-cluster-secret-store
   secretStoreKind: ClusterSecretStore
   dataFrom: []
+  data: []
 
 env:
   SPRING_PROFILES_ACTIVE: ""

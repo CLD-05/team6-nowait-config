@@ -23,6 +23,15 @@ env:
 externalSecret:
   dataFrom:
     - key: team6-nowait/dev/api
-    - key: team6-nowait/dev/redis
+
+  data:
+    - secretKey: REDIS_HOST
+      remoteRef:
+        key: team6-nowait/dev/redis
+        property: REDIS_HOST
+    - secretKey: REDIS_PORT
+      remoteRef:
+        key: team6-nowait/dev/redis
+        property: REDIS_PORT
 
 namespace: nowait-dev
