@@ -7,7 +7,7 @@ metadata:
     app: nowait-worker
     team: team6
 spec:
-  {{- if not (or .Values.hpa.enabled .Values.keda.enabled) }}
+  {{- if not (or .Values.hpa.enabled (and .Values.keda .Values.keda.enabled)) }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
@@ -41,15 +41,25 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
-          livenessProbe:
+
+          startupProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10
+            failureThreshold: 18
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 6
+
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 20
             periodSeconds: 5
+            failureThreshold: 6
