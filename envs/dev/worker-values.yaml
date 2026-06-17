@@ -18,7 +18,10 @@ resources:
     memory: 1Gi
 
 env:
-  SPRING_PROFILES_ACTIVE: "dev"
+  # reservation-worker / waiting-worker 프로필이 빠지면 ReservationSyncWorker,
+  # WaitingSyncWorker, NoShow/CallTimeout/DailyOpen 스케줄러가 전부 비활성화되어
+  # Redis에 생성된 예약·웨이팅이 DB에 영원히 동기화되지 않는다.
+  SPRING_PROFILES_ACTIVE: "dev,reservation-worker,waiting-worker"
 
 externalSecret:
   dataFrom:
