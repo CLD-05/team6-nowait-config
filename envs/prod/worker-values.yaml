@@ -23,7 +23,10 @@ env:
   # WaitingSyncWorker, NoShow/CallTimeout/DailyOpen 스케줄러가 전부 비활성화되어
   # Redis에 생성된 예약·웨이팅이 DB에 영원히 동기화되지 않는다.
   SPRING_PROFILES_ACTIVE: "prod,reservation-worker,waiting-worker"
+  REDIS_SSL_ENABLED: "true"
 
+# team6-nowait/prod/redis 시크릿에 REDIS_HOST/REDIS_PORT 외에
+# REDIS_PASSWORD(= terraform output의 elasticache auth_token)도 넣어야 한다.
 externalSecret:
   dataFrom:
     - key: team6-nowait/prod/api

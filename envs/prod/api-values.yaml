@@ -26,7 +26,10 @@ pdb:
 
 env:
   SPRING_PROFILES_ACTIVE: "prod"
+  REDIS_SSL_ENABLED: "true"
 
+# team6-nowait/prod/redis 시크릿에 REDIS_HOST/REDIS_PORT 외에
+# REDIS_PASSWORD(= terraform output의 elasticache auth_token)도 넣어야 한다.
 externalSecret:
   dataFrom:
     - key: team6-nowait/prod/api

@@ -41,6 +41,7 @@ externalSecret:
 env:
   SPRING_PROFILES_ACTIVE: ""
   SERVER_PORT: "8080"
+  REDIS_SSL_ENABLED: "false"
 
 serviceAccount:
   name: nowait-worker-sa
