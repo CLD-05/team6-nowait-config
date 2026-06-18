@@ -14,7 +14,8 @@ resources:
     cpu: 250m
     memory: 512Mi
   limits:
-    cpu: 500m
+    # api와 동일한 이유로 콜드스타트 CPU 쓰로틀링을 풀어준다 (request는 그대로 유지).
+    cpu: 1500m
     memory: 1Gi
 
 env:

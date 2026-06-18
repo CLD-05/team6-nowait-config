@@ -17,7 +17,10 @@ resources:
     cpu: 250m
     memory: 512Mi
   limits:
-    cpu: 500m
+    # 500m였을 때 부팅 중 JPA/Hibernate 클래스로딩 구간이 CPU 쓰로틀링으로
+    # 2~3배 늘어져 콜드스타트가 60~100초+ 걸렸다. 노드 실사용률은 평소 10% 미만이라
+    # limit만 올려도(request는 유지) 스케줄링 여유를 깎지 않고 부팅 버스트만 풀어준다.
+    cpu: 1500m
     memory: 1Gi
 
 env:
