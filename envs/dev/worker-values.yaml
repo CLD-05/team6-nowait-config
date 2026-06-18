@@ -3,7 +3,7 @@
 replicaCount: 1
 
 image:
-  tag: "dev-e6c0585"  # cicd.yml에서 이미지 태그 자동 갱신
+  tag: "dev-ecc1b24"  # cicd.yml에서 이미지 태그 자동 갱신
 
 hpa:
   minReplicas: 1
