@@ -3,7 +3,7 @@
 replicaCount: 1
 
 image:
-  tag: "dev-f1482f0"  # cicd.yml에서 이미지 태그 자동 갱신
+  tag: "dev-24eb221"  # cicd.yml에서 이미지 태그 자동 갱신
 
 ingress:
   host: "" 
