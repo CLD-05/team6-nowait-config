@@ -1,0 +1,55 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nowait-app-rules
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: nowait-api
+    team: team6
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: nowait.rules
+      rules:
+        - alert: NowaitHighMemoryUsage
+          expr: |
+            (sum(container_memory_working_set_bytes{namespace="{{ .Values.namespace }}", container=~"nowait-api|nowait-worker"}) by (pod)
+            / sum(kube_pod_container_resource_limits{namespace="{{ .Values.namespace }}", resource="memory", container=~"nowait-api|nowait-worker"}) by (pod)) > 0.8
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{`{{ $labels.pod }}`}} 메모리 사용률 80% 초과"
+            description: "5분 이상 메모리 limit의 80%를 초과했습니다."
+
+        - alert: NowaitHighCpuUsage
+          expr: |
+            (sum(rate(container_cpu_usage_seconds_total{namespace="{{ .Values.namespace }}", container=~"nowait-api|nowait-worker"}[5m])) by (pod)
+            / sum(kube_pod_container_resource_limits{namespace="{{ .Values.namespace }}", resource="cpu", container=~"nowait-api|nowait-worker"}) by (pod)) > 0.8
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{`{{ $labels.pod }}`}} CPU 사용률 80% 초과"
+            description: "5분 이상 CPU limit의 80%를 초과했습니다."
+
+        - alert: NowaitPodCrashLooping
+          expr: |
+            increase(kube_pod_container_status_restarts_total{namespace="{{ .Values.namespace }}", container=~"nowait-api|nowait-worker"}[15m]) > 2
+          labels:
+            severity: critical
+          annotations:
+            summary: "{{`{{ $labels.pod }}`}} 반복 재시작 중"
+            description: "최근 15분 동안 2회 초과 재시작했습니다. 직전 컨테이너 로그(kubectl logs --previous)부터 확인하세요."
+
+        - alert: NowaitQueueBacklogHigh
+          expr: |
+            (sum(waiting_queue_pending) + sum(reservation_queue_pending)) > 50
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Redis pending 큐 적체"
+            description: "웨이팅/예약 pending 큐 합이 10분 이상 50건을 초과했습니다. reservation-worker/waiting-worker 프로필이 활성인지, KEDA가 worker를 스케일하고 있는지 확인하세요."
+{{- end }}

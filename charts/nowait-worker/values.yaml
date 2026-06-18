@@ -25,10 +25,21 @@ hpa:
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 70
 
-# KEDA ScaledObject 템플릿은 아직 없으므로 기본값은 false.
-# keda.enabled=true로 바꾸려면 templates/scaledobject.yaml을 추가해야 한다.
+# KEDA로 전환 시 hpa.enabled=false로 같이 바꾼다.
+# worker는 CPU 대신 Redis pending 큐 깊이(Prometheus 트리거)로 스케일한다 —
+# 비동기 큐 처리라 CPU보다 큐 적체가 더 빠르고 정확한 부하 신호이기 때문.
 keda:
   enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  prometheus:
+    serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
+    query: "sum(waiting_queue_pending) + sum(reservation_queue_pending)"
+    threshold: "20"
+    activationThreshold: "1"
+
+monitoring:
+  enabled: true
 
 externalSecret:
   enabled: true
