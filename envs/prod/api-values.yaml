@@ -1,18 +1,22 @@
 # prod 환경 api 오버라이드 값
-
 replicaCount: 2
-
 image:
   tag: "latest"  # cicd.yml에서 이미지 태그 자동 갱신
-
 ingress:
-  host: api.nowait.com  # 실제 도메인 또는 Route53으로 교체 필요
-
+  host: api.nowait.singleuser.cloud
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
+    alb.ingress.kubernetes.io/healthcheck-port: "8080"
+    alb.ingress.kubernetes.io/certificate-arn: "<ACM_CERTIFICATE_ARN_PLACEHOLDER>"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
 hpa:
   minReplicas: 2
   maxReplicas: 10
-
-# prod: m6i.large 기준 (피드백 반영 - T계열 사용 금지)
+# prod: m6i.large 기준 (로드밸런싱 반영 - T계열 사용 금지)
 resources:
   requests:
     cpu: 500m
@@ -20,13 +24,12 @@ resources:
   limits:
     cpu: 1000m
     memory: 2Gi
-
 pdb:
   minAvailable: 1
-
 env:
   SPRING_PROFILES_ACTIVE: "prod"
   REDIS_SSL_ENABLED: "true"
+  DB_URL: "<RDS_ENDPOINT_PLACEHOLDER>"  # terraform apply 후 rds_endpoint 값으로 교체
 
 # team6-nowait/prod/redis 시크릿에 REDIS_HOST/REDIS_PORT 외에
 # REDIS_PASSWORD(= terraform output의 elasticache auth_token)도 넣어야 한다.
@@ -34,5 +37,13 @@ externalSecret:
   dataFrom:
     - key: team6-nowait/prod/api
     - key: team6-nowait/prod/redis
-
+  data:
+    - secretKey: DB_USERNAME
+      remoteRef:
+        key: "<RDS_MASTER_USER_SECRET_ARN_PLACEHOLDER>"
+        property: username
+    - secretKey: DB_PASSWORD
+      remoteRef:
+        key: "<RDS_MASTER_USER_SECRET_ARN_PLACEHOLDER>"
+        property: password
 namespace: nowait-prod

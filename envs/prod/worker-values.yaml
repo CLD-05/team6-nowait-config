@@ -1,15 +1,11 @@
 # prod 환경 worker 오버라이드 값
-
 replicaCount: 2
-
 image:
   tag: "latest"  # cicd.yml에서 이미지 태그 자동 갱신
-
 hpa:
   minReplicas: 2
   maxReplicas: 8
-
-# prod: m6i.large 기준 (피드백 반영 - T계열 사용 금지)
+# prod: m6i.large 기준 (로드밸런싱 반영 - T계열 사용 금지)
 resources:
   requests:
     cpu: 500m
@@ -17,13 +13,13 @@ resources:
   limits:
     cpu: 1000m
     memory: 2Gi
-
 env:
   # reservation-worker / waiting-worker 프로필이 빠지면 ReservationSyncWorker,
   # WaitingSyncWorker, NoShow/CallTimeout/DailyOpen 스케줄러가 전부 비활성화되어
   # Redis에 생성된 예약·웨이팅이 DB에 영원히 동기화되지 않는다.
   SPRING_PROFILES_ACTIVE: "prod,reservation-worker,waiting-worker"
   REDIS_SSL_ENABLED: "true"
+  DB_URL: "<RDS_ENDPOINT_PLACEHOLDER>"  # terraform apply 후 rds_endpoint 값으로 교체
 
 # team6-nowait/prod/redis 시크릿에 REDIS_HOST/REDIS_PORT 외에
 # REDIS_PASSWORD(= terraform output의 elasticache auth_token)도 넣어야 한다.
@@ -31,5 +27,13 @@ externalSecret:
   dataFrom:
     - key: team6-nowait/prod/api
     - key: team6-nowait/prod/redis
-
+  data:
+    - secretKey: DB_USERNAME
+      remoteRef:
+        key: "<RDS_MASTER_USER_SECRET_ARN_PLACEHOLDER>"  # terraform apply 후 rds_master_user_secret_arn 값으로 교체
+        property: username
+    - secretKey: DB_PASSWORD
+      remoteRef:
+        key: "<RDS_MASTER_USER_SECRET_ARN_PLACEHOLDER>"  # 위와 동일 ARN
+        property: password
 namespace: nowait-prod

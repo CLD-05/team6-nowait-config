@@ -36,6 +36,10 @@ spec:
               value: {{ .Values.env.SERVER_PORT | quote }}
             - name: REDIS_SSL_ENABLED
               value: {{ .Values.env.REDIS_SSL_ENABLED | quote }}
+            {{- if .Values.env.DB_URL }}
+            - name: DB_URL
+              value: {{ .Values.env.DB_URL | quote }}
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
