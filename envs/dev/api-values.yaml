@@ -23,7 +23,10 @@ keda:
 resources:
   requests:
     cpu: 250m
-    memory: 512Mi
+    # 부하테스트(2026-06-19): idle 실사용 ~450Mi(=88% of 512Mi)가 KEDA 메모리 target(70%)을
+    # 상시 초과 → api가 maxReplicas(3)에 고정됐다. request를 올려 idle 비율을 낮추고
+    # 실부하(CPU/메모리) 기준으로 정상 스케일되도록 한다.
+    memory: 768Mi
   limits:
     # 500m였을 때 부팅 중 JPA/Hibernate 클래스로딩 구간이 CPU 쓰로틀링으로
     # 2~3배 늘어져 콜드스타트가 60~100초+ 걸렸다. 노드 실사용률은 평소 10% 미만이라
