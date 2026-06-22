@@ -1,7 +1,7 @@
 # prod 환경 api 오버라이드 값
 replicaCount: 2
 image:
-  tag: "latest"  # cicd.yml에서 이미지 태그 자동 갱신
+  tag: "prod-2d70f60"
 ingress:
   host: api.nowait.singleuser.cloud
   annotations:
