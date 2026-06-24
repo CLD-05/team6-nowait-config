@@ -50,5 +50,13 @@ externalSecret:
       remoteRef:
         key: team6-nowait/dev/redis
         property: REDIS_PORT
+    # DB 비번은 RDS 관리형 시크릿(manage_master_user_password=true, 자동 로테이션)에서
+    # 직접 읽는다. dataFrom의 team6-nowait/dev/api에도 DB_PASSWORD가 있지만 data가
+    # 우선하므로, RDS 비번이 로테이션돼도 항상 현재 값이 적용된다.
+    # (과거: api 시크릿의 정적 비번이 RDS 로테이션과 어긋나 Access denied → 전체 5xx 장애)
+    - secretKey: DB_PASSWORD
+      remoteRef:
+        key: "rds!db-373735b1-3f9e-4833-b9e2-b2d6c1dc53a4"
+        property: password
 
 namespace: nowait-dev
