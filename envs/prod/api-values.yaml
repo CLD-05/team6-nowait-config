@@ -13,6 +13,11 @@ ingress:
     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-northeast-2:194722398200:certificate/19e45faf-b37a-44c6-b79f-b62954b4ee22"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # SSE(/notifications/stream) 롱커넥션 유지를 위해 ALB idle timeout을 300초로 고정.
+    # 이 어노테이션이 없으면 AWS 기본값 60초로 되돌아가, ALB Controller reconcile 시
+    # SSE 연결이 60초 idle마다 끊길 수 있다. (라이브 ALB엔 300으로 수동 설정돼 있었으나
+    # chart에 없어 드리프트 상태였던 것을 코드화)
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=300
 hpa:
   enabled: false
   minReplicas: 2
