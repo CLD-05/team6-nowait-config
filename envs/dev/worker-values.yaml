@@ -3,7 +3,7 @@
 replicaCount: 1
 
 image:
-  tag: "dev-3dd96ae"  # cicd.yml에서 이미지 태그 자동 갱신
+  tag: "dev-51a918c"  # cicd.yml에서 이미지 태그 자동 갱신
 
 hpa:
   enabled: false
