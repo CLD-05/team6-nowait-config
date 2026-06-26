@@ -13,11 +13,14 @@ ingress:
     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-northeast-2:194722398200:certificate/19e45faf-b37a-44c6-b79f-b62954b4ee22"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
-    # SSE(/notifications/stream) 롱커넥션 유지를 위해 ALB idle timeout을 300초로 고정.
-    # 이 어노테이션이 없으면 AWS 기본값 60초로 되돌아가, ALB Controller reconcile 시
-    # SSE 연결이 60초 idle마다 끊길 수 있다. (라이브 ALB엔 300으로 수동 설정돼 있었으나
-    # chart에 없어 드리프트 상태였던 것을 코드화)
-    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=300
+    # SSE(/notifications/stream) 롱커넥션 유지를 위해 ALB idle timeout을 늘림.
+    # heartbeat로 60초 idle 끊김은 우회 중이나, Pod 스케일 시 안전망으로 3600초까지 확보.
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
+    # Pod 스케일아웃 시 SSE 재연결이 다른 Pod로 가서 알림 누락되는 것을 막기 위한 sticky session.
+    alb.ingress.kubernetes.io/target-group-attributes: |
+      stickiness.enabled=true,
+      stickiness.type=lb_cookie,
+      stickiness.lb_cookie.duration_seconds=1800
 hpa:
   enabled: false
   minReplicas: 2

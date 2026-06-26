@@ -6,7 +6,14 @@ image:
   tag: "dev-79d0fec"  # cicd.yml에서 이미지 태그 자동 갱신
 
 ingress:
-  host: "" 
+  host: ""
+  annotations:
+    # SSE 롱커넥션 + 스케일아웃 시 재연결 일관성 확보 (prod와 동일 정책)
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
+    alb.ingress.kubernetes.io/target-group-attributes: |
+      stickiness.enabled=true,
+      stickiness.type=lb_cookie,
+      stickiness.lb_cookie.duration_seconds=1800
 
 hpa:
   enabled: false
