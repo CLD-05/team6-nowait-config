@@ -41,7 +41,6 @@ hpa:
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 60
-  targetMemoryUtilizationPercentage: 70
 
 # KEDA로 전환 시 hpa.enabled=false로 같이 바꾼다 (둘 다 켜두면 같은 Deployment를
 # 두 컨트롤러가 동시에 스케일하려고 경쟁한다).
@@ -50,7 +49,6 @@ keda:
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 60
-  targetMemoryUtilizationPercentage: 70
 
 pdb:
   enabled: true
