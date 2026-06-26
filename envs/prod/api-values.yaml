@@ -1,7 +1,7 @@
 # prod 환경 api 오버라이드 값
 replicaCount: 2
 image:
-  tag: "prod-79d0fec"
+  tag: 'prod-79d0fec'
 ingress:
   host: api.nowait.singleuser.cloud
   annotations:
@@ -9,10 +9,10 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
-    alb.ingress.kubernetes.io/healthcheck-port: "8080"
-    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-northeast-2:194722398200:certificate/19e45faf-b37a-44c6-b79f-b62954b4ee22"
+    alb.ingress.kubernetes.io/healthcheck-port: '8080'
+    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-northeast-2:194722398200:certificate/19e45faf-b37a-44c6-b79f-b62954b4ee22'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
     # SSE(/notifications/stream) 롱커넥션 유지를 위해 ALB idle timeout을 늘림.
     # heartbeat로 60초 idle 끊김은 우회 중이나, Pod 스케일 시 안전망으로 3600초까지 확보.
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
@@ -44,10 +44,13 @@ resources:
 pdb:
   minAvailable: 1
 env:
-  SPRING_PROFILES_ACTIVE: "prod"
-  REDIS_SSL_ENABLED: "true"
+  SPRING_PROFILES_ACTIVE: 'prod'
+  REDIS_SSL_ENABLED: 'true'
   DB_URL: jdbc:mysql://team6-nowait-prod-rds.cx482c6a63zp.ap-northeast-2.rds.amazonaws.com:3306/nowait?useSSL=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-
+  COOKIE_SECURE: 'true'
+  COOKIE_SAME_SITE: 'Strict'
+  COOKIE_DOMAIN: '.nowait.singleuser.cloud'
+  CORS_ALLOWED_ORIGINS: 'https://nowait.singleuser.cloud'
 # team6-nowait/prod/redis 시크릿에 REDIS_HOST/REDIS_PORT 외에
 # REDIS_PASSWORD(= terraform output의 elasticache auth_token)도 넣어야 한다.
 externalSecret:
@@ -57,10 +60,10 @@ externalSecret:
   data:
     - secretKey: DB_USERNAME
       remoteRef:
-        key: "arn:aws:secretsmanager:ap-northeast-2:194722398200:secret:rds!db-9b19032e-8175-459a-935c-506f967b375f-g7TldR"
+        key: 'arn:aws:secretsmanager:ap-northeast-2:194722398200:secret:rds!db-9b19032e-8175-459a-935c-506f967b375f-g7TldR'
         property: username
     - secretKey: DB_PASSWORD
       remoteRef:
-        key: "arn:aws:secretsmanager:ap-northeast-2:194722398200:secret:rds!db-9b19032e-8175-459a-935c-506f967b375f-g7TldR"
+        key: 'arn:aws:secretsmanager:ap-northeast-2:194722398200:secret:rds!db-9b19032e-8175-459a-935c-506f967b375f-g7TldR'
         property: password
 namespace: nowait-prod
