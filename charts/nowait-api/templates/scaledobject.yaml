@@ -12,6 +12,12 @@ spec:
     name: nowait-api
   minReplicaCount: {{ .Values.keda.minReplicas }}
   maxReplicaCount: {{ .Values.keda.maxReplicas }}
+  {{- if .Values.keda.behavior }}
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        {{- toYaml .Values.keda.behavior | nindent 8 }}
+  {{- end }}
   triggers:
     - type: cpu
       metricType: Utilization

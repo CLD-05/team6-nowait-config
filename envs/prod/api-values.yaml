@@ -30,6 +30,18 @@ keda:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 70
+  # scale-down이 너무 빠르게 일어나며 새 pod가 startup probe도 통과하기 전에
+  # 다시 줄어드는 flapping 현상 발견(2026-06-26 부하테스트 Phase1에서 확인).
+  # scale-down만 5분간 안정화시키고, scale-up은 즉시 반응 유지.
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
 # prod: m6i.large 기준 (로드밸런싱 반영 - T계열 사용 금지)
 resources:
   requests:
