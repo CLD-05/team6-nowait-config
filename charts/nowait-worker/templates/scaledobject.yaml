@@ -12,6 +12,12 @@ spec:
     name: nowait-worker
   minReplicaCount: {{ .Values.keda.minReplicas }}
   maxReplicaCount: {{ .Values.keda.maxReplicas }}
+  {{- if .Values.keda.behavior }}
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        {{- toYaml .Values.keda.behavior | nindent 8 }}
+  {{- end }}
   triggers:
     # worker는 동기 HTTP가 아니라 Redis 큐를 비동기로 비우는 역할이라, CPU보다
     # 큐 적체(pending) 깊이가 더 빠르고 정확한 부하 신호다. WaitingMetrics/
