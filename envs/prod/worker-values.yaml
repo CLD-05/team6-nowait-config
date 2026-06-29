@@ -1,7 +1,7 @@
 # prod 환경 worker 오버라이드 값
 replicaCount: 2
 image:
-  tag: "prod-c9f09e6"
+  tag: "prod-24b9424"
 hpa:
   enabled: false
   minReplicas: 2
