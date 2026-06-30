@@ -1,7 +1,7 @@
 # prod 환경 api 오버라이드 값
 replicaCount: 2
 image:
-  tag: "prod-7115e0b"
+  tag: "prod-e32e337"
 ingress:
   host: api.nowait.singleuser.cloud
   annotations:
