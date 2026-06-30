@@ -5,13 +5,13 @@ image:
 hpa:
   enabled: false
   minReplicas: 2
-  maxReplicas: 8
+  maxReplicas: 16
 # prod 미구축 상태에서 dev와 동일하게 미리 KEDA로 전환해둔다.
 # threshold/activationThreshold는 dev 값을 그대로 가져온 것이라, prod 부하테스트 후 재조정 필요.
 keda:
   enabled: true
   minReplicas: 2
-  maxReplicas: 8
+  maxReplicas: 16
   prometheus:
     serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
     query: "sum(waiting_queue_pending) + sum(reservation_queue_pending)"
