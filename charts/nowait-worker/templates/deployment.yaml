@@ -40,6 +40,14 @@ spec:
             - name: DB_URL
               value: {{ .Values.env.DB_URL | quote }}
             {{- end }}
+            {{- if .Values.env.WAITING_WORKER_BATCH_SIZE }}
+            - name: WAITING_WORKER_BATCH_SIZE
+              value: {{ .Values.env.WAITING_WORKER_BATCH_SIZE | quote }}
+            {{- end }}
+            {{- if .Values.env.WAITING_WORKER_CHUNK_SIZE }}
+            - name: WAITING_WORKER_CHUNK_SIZE
+              value: {{ .Values.env.WAITING_WORKER_CHUNK_SIZE | quote }}
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
