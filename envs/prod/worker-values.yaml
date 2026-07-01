@@ -46,6 +46,10 @@ env:
   # batch=한 폴링당 pop 토큰 수, chunk=한 트랜잭션으로 묶는 단위. (기본 50/25)
   WAITING_WORKER_BATCH_SIZE: "50"
   WAITING_WORKER_CHUNK_SIZE: "25"
+  # ReservationSyncWorker 청크 배치 처리 튜닝값. 예약은 슬롯 PESSIMISTIC 락을 청크 동안
+  # 길게 쥐므로, hot 슬롯 경합(batch_fallback 급증)이 보이면 CHUNK_SIZE를 5~10으로 낮춘다.
+  RESERVATION_WORKER_BATCH_SIZE: "50"
+  RESERVATION_WORKER_CHUNK_SIZE: "25"
   DB_URL: jdbc:mysql://team6-nowait-prod-rds.cx482c6a63zp.ap-northeast-2.rds.amazonaws.com:3306/nowait?useSSL=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 
 # team6-nowait/prod/redis 시크릿에 REDIS_HOST/REDIS_PORT 외에
