@@ -18,6 +18,12 @@ ingress:
     # SSE 연결이 60초 idle마다 끊길 수 있다. (라이브 ALB엔 300으로 수동 설정돼 있었으나
     # chart에 없어 드리프트 상태였던 것을 코드화)
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=300
+    # 800 VU 예약 부하테스트에서 API 파드 일부(2/14)만 톰캣 스레드(200)가 포화되고 나머지는
+    # 유휴 → p95 꼬리 지연(~1.65s) 발생. round_robin은 요청 개수만 균등 분배(load-unaware)라
+    # 무겁거나 느린 요청이 몰린 타겟이 포화된다. least_outstanding_requests는 처리 중(in-flight)
+    # 요청이 가장 적은 타겟으로 라우팅해 쏠림을 자가 보정한다.
+    # ⚠️ 위 load-balancer-attributes(idle_timeout)와는 별개 어노테이션이므로 합치지 말 것.
+    alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
 hpa:
   enabled: false
   minReplicas: 2
